@@ -1,0 +1,914 @@
+/* ============================================================================
+   Chronos RPG — Design System & HUD Tecnológico (Ordem Paranormal / Sci-Fi / CoC)
+   Cores escuras, tons de roxo profundo, rosa neon e acentos metálicos
+   ============================================================================ */
+
+:root {
+  --bg-void: #07070d;
+  --bg-panel: rgba(16, 15, 28, 0.88);
+  --bg-panel-elevated: rgba(24, 22, 42, 0.92);
+  --bg-input: rgba(10, 9, 18, 0.9);
+
+  --border-metallic: rgba(148, 130, 190, 0.22);
+  --border-highlight: rgba(236, 72, 153, 0.55);
+  --border-purple: rgba(168, 85, 247, 0.45);
+
+  --neon-purple: #a855f7;
+  --neon-purple-glow: rgba(168, 85, 247, 0.35);
+  --neon-pink: #ec4899;
+  --neon-pink-glow: rgba(236, 72, 153, 0.4);
+  --neon-cyan: #22d3ee;
+  --neon-amber: #f59e0b;
+  --neon-emerald: #10b981;
+  --neon-crimson: #f43f5e;
+
+  --text-primary: #f3f0ff;
+  --text-secondary: #a69ec0;
+  --text-muted: #6c6486;
+  --metallic-silver: #cbd5e1;
+
+  --font-sans: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.master-body {
+  background-color: var(--bg-void);
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(168, 85, 247, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(236, 72, 153, 0.10) 0%, transparent 40%),
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* Top Header Bar */
+.hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: rgba(11, 10, 20, 0.94);
+  border-bottom: 1px solid var(--border-metallic);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-emblem {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25));
+  border: 1px solid var(--border-highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px var(--neon-purple-glow);
+  font-size: 1.25rem;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ffffff, #e9d5ff, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.6px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-metallic);
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neon-emerald);
+  box-shadow: 0 0 10px var(--neon-emerald);
+}
+
+.status-dot.paused {
+  background: var(--neon-amber);
+  box-shadow: 0 0 10px var(--neon-amber);
+}
+
+.status-dot.hidden-overlay {
+  background: var(--neon-crimson);
+  box-shadow: 0 0 10px var(--neon-crimson);
+}
+
+.kbd-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: rgba(168, 85, 247, 0.16);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #e9d5ff;
+}
+
+/* Main Dashboard Grid */
+.master-grid {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 22px 28px 36px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 22px;
+}
+
+@media (max-width: 980px) {
+  .master-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* HUD Card Styling */
+.hud-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-metallic);
+  border-radius: 14px;
+  padding: 20px 22px;
+  position: relative;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.hud-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-purple), var(--neon-pink), transparent);
+  opacity: 0.75;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(148, 130, 190, 0.14);
+}
+
+.card-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--metallic-silver);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title span.accent-dot {
+  width: 6px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--neon-purple), var(--neon-pink));
+  display: inline-block;
+}
+
+/* Master Clock Telemetry Banner */
+.master-clock-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(20, 17, 36, 0.95), rgba(32, 18, 46, 0.85));
+  border: 1px solid var(--border-purple);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  box-shadow: inset 0 0 28px rgba(168, 85, 247, 0.12);
+}
+
+.clock-readout-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.day-pill {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(236, 72, 153, 0.18);
+  border: 1px solid rgba(236, 72, 153, 0.45);
+  color: #fbcfe8;
+}
+
+.period-pill {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.digital-master-time {
+  font-family: var(--font-mono);
+  font-size: 3.1rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(236, 72, 153, 0.25);
+  line-height: 1.05;
+}
+
+.ratio-telemetry {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.ratio-active-badge {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f472b6;
+  background: rgba(236, 72, 153, 0.12);
+  border: 1px solid rgba(236, 72, 153, 0.35);
+  padding: 5px 12px;
+  border-radius: 8px;
+}
+
+.ratio-conversion-hint {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+/* Simulation Controls */
+.sim-controls-row {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 640px) {
+  .sim-controls-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.btn-hud {
+  appearance: none;
+  border: 1px solid var(--border-metallic);
+  background: var(--bg-panel-elevated);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 11px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.18s ease;
+}
+
+.btn-hud:hover {
+  border-color: var(--neon-purple);
+  background: rgba(168, 85, 247, 0.16);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.22);
+}
+
+.btn-hud:active {
+  transform: translateY(0);
+}
+
+.btn-hud.btn-primary-play {
+  background: linear-gradient(135deg, #9333ea, #db2777);
+  border-color: #f472b6;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  box-shadow: 0 0 18px rgba(219, 39, 119, 0.35);
+}
+
+.btn-hud.btn-primary-play.running {
+  background: linear-gradient(135deg, #d97706, #e11d48);
+  border-color: #fbbf24;
+}
+
+.manual-time-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(148, 130, 190, 0.18);
+}
+
+.manual-time-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.hud-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border-metallic);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 7px 10px;
+  border-radius: 7px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.hud-input:focus {
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 10px rgba(236, 72, 153, 0.25);
+}
+
+.hud-input.small-num {
+  width: 68px;
+  text-align: center;
+}
+
+/* Preset Cards Grid (Módulo 1.1) */
+.presets-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.preset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(19, 18, 34, 0.85);
+  border: 1px solid var(--border-metallic);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.preset-btn:hover {
+  border-color: rgba(168, 85, 247, 0.6);
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.preset-btn.active {
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.22), rgba(236, 72, 153, 0.18));
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 18px rgba(236, 72, 153, 0.22);
+}
+
+.preset-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preset-icon {
+  font-size: 1.3rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preset-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.preset-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.preset-ratio-tag {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(168, 85, 247, 0.18);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #e9d5ff;
+}
+
+.preset-btn.active .preset-ratio-tag {
+  background: var(--neon-pink);
+  border-color: #f9a8d4;
+  color: #ffffff;
+}
+
+.custom-ratio-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(10, 9, 18, 0.75);
+  border: 1px solid var(--border-metallic);
+}
+
+/* Visibility & Environmental Toggles (Módulo 1.3) */
+.toggle-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 11px;
+  background: rgba(19, 18, 34, 0.75);
+  border: 1px solid var(--border-metallic);
+  margin-bottom: 12px;
+}
+
+.toggle-text h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-text p {
+  font-size: 0.77rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Switch Component */
+.hud-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.hud-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: rgba(40, 36, 62, 0.95);
+  border: 1px solid var(--border-metallic);
+  transition: 0.22s;
+  border-radius: 34px;
+}
+
+.switch-slider::before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--metallic-silver);
+  transition: 0.22s;
+  border-radius: 50%;
+}
+
+.hud-switch input:checked + .switch-slider {
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+  border-color: #f9a8d4;
+  box-shadow: 0 0 14px var(--neon-pink-glow);
+}
+
+.hud-switch input:checked + .switch-slider::before {
+  transform: translateX(24px);
+  background-color: #ffffff;
+}
+
+/* Clock Type Segmented Selector */
+.clock-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(148, 130, 190, 0.15);
+  transition: opacity 0.2s ease;
+}
+
+.clock-type-selector.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.radio-card {
+  padding: 11px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--border-metallic);
+  background: rgba(12, 11, 22, 0.8);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.18s ease;
+}
+
+.radio-card.selected {
+  border-color: var(--neon-purple);
+  background: rgba(168, 85, 247, 0.18);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.25);
+}
+
+.radio-card-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.radio-card-sub {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================================
+   MÓDULO 2: OVERLAY FLUTUANTE IMERSIVO DA MESA & PREVIEW
+   Fundo da janela 100% transparente; componentes sólidos e puramente diegéticos
+   ============================================================================ */
+
+html.overlay-html,
+body.overlay-body {
+  background: transparent !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  overflow: hidden;
+  user-select: none;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+/* Container raiz totalmente invisível (sem caixa retangular ao redor) */
+.immersive-overlay-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 6px;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  -webkit-app-region: drag;
+}
+
+.immersive-overlay-root.hud-hidden {
+  opacity: 0;
+  transform: translateY(-14px) scale(0.96);
+  pointer-events: none;
+}
+
+/* Domo em formato real de Semicírculo (160px de altura x 320px de largura) */
+.celestial-dome {
+  position: relative;
+  width: 320px;
+  height: 160px;
+  border-radius: 160px 160px 0 0;
+  overflow: hidden;
+  border: 2px solid rgba(168, 85, 247, 0.65);
+  border-bottom: 2px solid var(--neon-pink);
+  background: radial-gradient(circle at 50% 100%, #1e1b4b 0%, #090913 85%);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.75),
+    0 0 20px rgba(168, 85, 247, 0.28);
+  transition: background 0.6s ease;
+}
+
+/* Gradientes atmosféricos sólidos e vibrantes conforme a hora do jogo */
+.celestial-dome[data-period="dawn"] {
+  background: linear-gradient(180deg, #1e1b4b 0%, #7c2d12 58%, #f97316 100%);
+}
+.celestial-dome[data-period="morning"] {
+  background: linear-gradient(180deg, #0c4a6e 0%, #0284c7 62%, #bae6fd 100%);
+}
+.celestial-dome[data-period="noon"] {
+  background: linear-gradient(180deg, #0369a1 0%, #38bdf8 65%, #fef08a 100%);
+}
+.celestial-dome[data-period="afternoon"] {
+  background: linear-gradient(180deg, #1e3a8a 0%, #c2410c 65%, #fdba74 100%);
+}
+.celestial-dome[data-period="dusk"] {
+  background: linear-gradient(180deg, #0f172a 0%, #701a75 55%, #db2777 100%);
+}
+.celestial-dome[data-period="night"] {
+  background: radial-gradient(circle at 50% 105%, #2e1065 0%, #07070f 78%);
+}
+
+/* Estrelas no fundo noturno */
+.starfield {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 18% 24%, #fff, transparent),
+    radial-gradient(1px 1px at 36% 14%, #e9d5ff, transparent),
+    radial-gradient(1.5px 1.5px at 64% 28%, #fff, transparent),
+    radial-gradient(1px 1px at 82% 18%, #f472b6, transparent),
+    radial-gradient(1.5px 1.5px at 48% 35%, #fff, transparent),
+    radial-gradient(1px 1px at 15% 58%, #cbd5e1, transparent),
+    radial-gradient(1.5px 1.5px at 85% 55%, #fff, transparent);
+  opacity: 0.85;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.celestial-dome[data-period="morning"] .starfield,
+.celestial-dome[data-period="noon"] .starfield,
+.celestial-dome[data-period="afternoon"] .starfield {
+  opacity: 0.06;
+}
+
+/* Arco Pontilhado Guia da Órbita */
+.orbit-guide-arc {
+  position: absolute;
+  width: 236px;
+  height: 236px;
+  left: calc(50% - 118px);
+  bottom: -118px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+/* Roda Orbital: centro cravado na base do semicírculo */
+.orbit-wheel {
+  position: absolute;
+  width: 236px;
+  height: 236px;
+  left: calc(50% - 118px);
+  bottom: -118px;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.celestial-body {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  left: calc(50% - 19px);
+  top: -19px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.celestial-body.sun-icon {
+  background: radial-gradient(circle, #fffbeb 10%, #facc15 55%, #f97316 100%);
+  box-shadow: 0 0 22px #facc15, 0 0 42px rgba(249, 115, 22, 0.85);
+}
+
+.celestial-body.moon-icon {
+  top: auto;
+  bottom: -19px;
+  background: radial-gradient(circle, #f8fafc 15%, #cbd5e1 65%, #64748b 100%);
+  box-shadow: 0 0 18px rgba(226, 232, 240, 0.95), 0 0 34px rgba(168, 85, 247, 0.8);
+}
+
+/* Linha de Horizonte Minimalista (sem textos) */
+.dome-horizon-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.6), var(--neon-pink), rgba(168, 85, 247, 0.6));
+  z-index: 4;
+}
+
+/* Quando Visão do Céu está Desativada (Escuridão / Céu Obstruído sem textos técnicos) */
+.sky-blocked-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 60%, #161324 0%, #07060c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sky-blocked-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sky-blocked-icon {
+  font-size: 2rem;
+  opacity: 0.45;
+  filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5));
+}
+
+/* Montagem Imersiva do Relógio (Flutua isolado abaixo do semicírculo) */
+.immersive-clock-mount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Visor Digital Puro (Cápsula Sólida Imersiva) */
+.immersive-digital-watch {
+  background: linear-gradient(180deg, #131122 0%, #090812 100%);
+  border: 1.5px solid rgba(168, 85, 247, 0.65);
+  border-radius: 14px;
+  padding: 8px 24px;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.8),
+    0 0 16px rgba(236, 72, 153, 0.22),
+    inset 0 0 12px rgba(168, 85, 247, 0.15);
+}
+
+.player-digital-digits {
+  font-family: var(--font-mono);
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #f8fafc;
+  text-shadow: 0 0 14px var(--neon-purple-glow), 0 0 26px var(--neon-pink-glow);
+}
+
+/* Relógio Analógico Puro (Apenas o Mostrador Circular Sólido com Ponteiros) */
+.immersive-analog-watch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analog-watch-face {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1b1830 0%, #080710 100%);
+  border: 2.5px solid var(--neon-purple);
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.85),
+    0 0 18px rgba(168, 85, 247, 0.4),
+    inset 0 0 14px rgba(0, 0, 0, 0.9);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.watch-Center-pin {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--neon-pink);
+  border-radius: 50%;
+  top: calc(50% - 4px);
+  left: calc(50% - 4px);
+  z-index: 6;
+  box-shadow: 0 0 6px var(--neon-pink);
+}
+
+.watch-hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px;
+}
+
+.watch-hand.hour-hand {
+  width: 4px;
+  height: 27px;
+  margin-left: -2px;
+  background: #f8fafc;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  z-index: 3;
+}
+
+.watch-hand.minute-hand {
+  width: 2.5px;
+  height: 38px;
+  margin-left: -1.25px;
+  background: #c084fc;
+  box-shadow: 0 0 8px rgba(192, 132, 252, 0.7);
+  z-index: 4;
+}
+
+.watch-hand.second-hand {
+  width: 1.5px;
+  height: 42px;
+  margin-left: -0.75px;
+  background: var(--neon-pink);
+  z-index: 5;
+}
+
+.watch-tick {
+  position: absolute;
+  width: 2px;
+  height: 7px;
+  background: rgba(203, 213, 225, 0.5);
+  left: calc(50% - 1px);
+  top: 5px;
+  transform-origin: 50% 45px;
+}
+
+.watch-tick.major {
+  height: 9px;
+  width: 2.5px;
+  background: var(--neon-pink);
+}
+
+.hidden {
+  display: none !important;
+}
+

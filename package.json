@@ -1,0 +1,24 @@
+{
+  "name": "chronos-rpg",
+  "version": "1.0.0",
+  "description": "Aplicativo de Gerenciamento de Tempo Dinâmico para RPG Contemporâneo (Chronos RPG)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "web": "node server.js"
+  },
+  "keywords": [
+    "rpg",
+    "clock",
+    "chronos",
+    "ordem-paranormal",
+    "call-of-cthulhu",
+    "overlay"
+  ],
+  "author": "Chronos RPG",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0"
+  }
+}
+

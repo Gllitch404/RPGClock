@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chronos RPG — Painel de Controle do Mestre</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="master-body">
+
+  <!-- Barra de Topo HUD -->
+  <header class="hud-header">
+    <div class="brand-group">
+      <div class="brand-emblem">⏳</div>
+      <div>
+        <div class="brand-title">Chronos RPG // Master HUD</div>
+        <div class="brand-subtitle">Gerenciamento Elástico de Tempo &amp; Condições de Mesa</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="status-pill" id="simStatusPill">
+        <span class="status-dot paused" id="simStatusDot"></span>
+        <span id="simStatusText">SIMULAÇÃO PAUSADA</span>
+      </div>
+
+      <div class="status-pill" title="Atalho Global para Mostrar/Ocultar o Overlay da Mesa">
+        <span>Overlay:</span>
+        <span class="kbd-badge">Ctrl + Shift + T</span>
+      </div>
+
+      <button class="btn-hud" id="btnToggleOverlayWindow" title="Mostrar ou Ocultar o Overlay Flutuante">
+        👁️ Alternar Overlay
+      </button>
+
+      <button class="btn-hud" id="btnOpenBrowserOverlay" title="Abrir Overlay em nova janela (caso esteja no navegador)">
+        🗗 Abrir Aba Overlay
+      </button>
+    </div>
+  </header>
+
+  <!-- Grid Principal do Mestre -->
+  <main class="master-grid">
+
+    <!-- COLUNA ESQUERDA: Master Clock + Presets de Cena -->
+    <section class="column-stack">
+
+      <!-- Card 1: Controle de Simulação (Master Clock) -->
+      <article class="hud-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="accent-dot"></span>
+            2. Controle de Simulação (Master Clock)
+          </div>
+          <span class="period-pill" id="masterPeriodBadge">Noite Urbana</span>
+        </div>
+
+        <!-- Visor Principal do Mestre (sempre exato para o Mestre) -->
+        <div class="master-clock-hero">
+          <div class="clock-readout-group">
+            <div class="day-badge-row">
+              <span class="day-pill" id="masterDayLabel">DIA 01</span>
+              <span class="period-pill" id="masterFullPeriodLabel">Noite Urbana</span>
+            </div>
+            <div class="digital-master-time" id="masterDigitalClock">21:30:00</div>
+          </div>
+
+          <div class="ratio-telemetry">
+            <div class="ratio-active-badge" id="masterRatioBadge">1s Real = 1s Jogo</div>
+            <div class="ratio-conversion-hint" id="masterRatioHint">Velocidade Tempo Real (1x)</div>
+          </div>
+        </div>
+
+        <!-- Botões de Play/Pause, Avanço Rápido e Reset -->
+        <div class="sim-controls-row">
+          <button class="btn-hud btn-primary-play" id="btnPlayPause">
+            <span id="playPauseIcon">▶</span>
+            <span id="playPauseLabel">INICIAR</span>
+          </button>
+          <button class="btn-hud" id="btnPlus10Min" title="Avançar +10 Minutos">+10 min</button>
+          <button class="btn-hud" id="btnPlus1Hour" title="Avançar +1 Hora">+1 Hora</button>
+          <button class="btn-hud" id="btnPlus1Day" title="Avançar +1 Dia">+1 Dia</button>
+          <button class="btn-hud" id="btnResetDay" title="Resetar para o horário inicial do dia">↺ Reset Dia</button>
+        </div>
+
+        <!-- Ajuste Manual Direto de Horário e Hora de Reset -->
+        <div class="manual-time-bar">
+          <div class="manual-time-group">
+            <span>Definir Hora:</span>
+            <input type="number" id="inputSetDay" class="hud-input small-num" min="1" max="999" value="1" title="Dia" />
+            <input type="time" id="inputSetTime" class="hud-input" step="1" value="21:30:00" />
+            <button class="btn-hud" id="btnApplyExactTime">Aplicar</button>
+          </div>
+
+          <div class="manual-time-group">
+            <span>Início do Dia (Reset):</span>
+            <input type="time" id="inputResetHour" class="hud-input" value="08:00" />
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2: Gerenciador de Cenas e Ratios de Tempo -->
+      <article class="hud-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="accent-dot"></span>
+            1. Gerenciador de Cenas &amp; Ratios de Tempo
+          </div>
+          <span style="font-size: 0.74rem; color: var(--text-secondary);">Proporção Elástica</span>
+        </div>
+
+        <div class="presets-list" id="presetsContainer">
+          <!-- Renderizado dinamicamente via JS a partir de CHRONOS_PRESETS -->
+        </div>
+
+        <!-- Campo numérico editável para Ratios Personalizados Livres -->
+        <div class="custom-ratio-box">
+          <div>
+            <div style="font-size: 0.86rem; font-weight: 700; color: var(--text-primary);">
+              Ratio Personalizado Livre
+            </div>
+            <div style="font-size: 0.74rem; color: var(--text-secondary);">
+              1 segundo real equivale a quantos segundos no jogo?
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input
+              type="number"
+              id="inputCustomRatio"
+              class="hud-input small-num"
+              min="0.1"
+              max="86400"
+              step="0.5"
+              value="1"
+              style="width: 92px;"
+            />
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary);">s / seg</span>
+            <button class="btn-hud" id="btnApplyCustomRatio">Definir</button>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- COLUNA DIREITA: Visibilidade dos Jogadores + Simulador Ao Vivo do Overlay -->
+    <section class="column-stack">
+
+      <!-- Card 3: Painel de Visibilidade e Condições Ambientais -->
+      <article class="hud-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="accent-dot"></span>
+            3. Visibilidade &amp; Condições dos Personagens
+          </div>
+          <span style="font-size: 0.74rem; color: var(--neon-pink);">Controle de Meta-Informação</span>
+        </div>
+
+        <!-- Toggle 1: Visão do Céu -->
+        <div class="toggle-item">
+          <div class="toggle-text">
+            <h4>🌤️ Visão do Céu (Semicírculo Sol / Lua)</h4>
+            <p>
+              Ativa ou desativa a referência celeste para os jogadores. Desative quando o grupo estiver em
+              subsolos, bunkers, recintos sem janelas ou sob anomalias.
+            </p>
+          </div>
+          <label class="hud-switch" title="Alternar Visão do Céu">
+            <input type="checkbox" id="toggleSkyVision" checked />
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+
+        <!-- Toggle 2: Acesso a Relógio Físico + Tipo Digital vs Analógico -->
+        <div class="toggle-item" style="flex-direction: column; align-items: stretch;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+            <div class="toggle-text">
+              <h4>⌚ Acesso a Relógio Físico</h4>
+              <p>
+                Define se os personagens possuem smartphone, relógio de pulso ou painel à vista.
+                Se desativado, o horário fica oculto no overlay.
+              </p>
+            </div>
+            <label class="hud-switch" title="Alternar Acesso a Relógio Físico">
+              <input type="checkbox" id="toggleClockAccess" checked />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+
+          <!-- Seletor Digital vs Analógico -->
+          <div class="clock-type-selector" id="clockTypeGroup">
+            <div class="radio-card selected" data-clock-type="digital" id="cardClockDigital">
+              <div class="radio-card-title">🔢 Relógio Digital</div>
+              <div class="radio-card-sub">Exibe a hora exata em dígitos neon (smartphone / painel moderno).</div>
+            </div>
+            <div class="radio-card" data-clock-type="analog" id="cardClockAnalog">
+              <div class="radio-card-title">🧭 Relógio Analógico</div>
+              <div class="radio-card-sub">Exibe apenas ponteiros físicos (leitura interpretativa pelos jogadores).</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4: Espelho em Tempo Real do Overlay da Mesa (Módulo 2 Preview) -->
+      <article class="hud-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="accent-dot"></span>
+            4. Espelho em Tempo Real (Visão Imersiva dos Jogadores)
+          </div>
+          <span class="status-pill" id="overlayWindowStatusBadge" style="padding: 3px 10px; font-size: 0.7rem;">
+            Overlay Ativo
+          </span>
+        </div>
+
+        <p style="font-size: 0.76rem; color: var(--text-secondary); margin-bottom: 14px;">
+          Abaixo está exatamente o que os jogadores enxergam flutuando sobre a tela (sem fundo e sem textos funcionais) quando você aciona <span class="kbd-badge">Ctrl + Shift + T</span>:
+        </p>
+
+        <!-- Preview Embutido idêntico ao Overlay Imersivo -->
+        <div style="display: flex; justify-content: center; padding: 14px 0; background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%); border-radius: 12px;">
+          <div class="immersive-overlay-root" id="previewOverlayWidget" style="-webkit-app-region: no-drag;">
+            <!-- Semicírculo Celeste -->
+            <div class="celestial-dome" id="previewCelestialStage" data-period="night">
+              <div class="starfield"></div>
+              <div class="orbit-guide-arc"></div>
+              <div class="orbit-wheel" id="previewOrbitWheel">
+                <div class="celestial-body sun-icon" title="Sol">☀️</div>
+                <div class="celestial-body moon-icon" title="Lua">🌙</div>
+              </div>
+
+              <!-- Escuridão quando sem visão do céu -->
+              <div class="sky-blocked-overlay" id="previewSkyBlocked">
+                <div class="sky-blocked-icon">🌑</div>
+              </div>
+
+              <div class="dome-horizon-line"></div>
+            </div>
+
+            <!-- Display Condicional de Relógio -->
+            <div class="immersive-clock-mount" id="previewClockMount">
+              <!-- Visão Digital -->
+              <div class="immersive-digital-watch" id="previewDigitalBox">
+                <div class="player-digital-digits" id="previewPlayerDigital">21:30:00</div>
+              </div>
+
+              <!-- Visão Analógica -->
+              <div class="immersive-analog-watch hidden" id="previewAnalogBox">
+                <div class="analog-watch-face" id="previewAnalogFace">
+                  <div class="watch-Center-pin"></div>
+                  <div class="watch-hand hour-hand" id="previewHourHand"></div>
+                  <div class="watch-hand minute-hand" id="previewMinuteHand"></div>
+                  <div class="watch-hand second-hand" id="previewSecondHand"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <script src="shared-sync.js"></script>
+  <script src="master.js"></script>
+</body>
+</html>
+

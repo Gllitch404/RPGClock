@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="overlay-html">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chronos RPG — Overlay</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="overlay-body">
+
+  <!-- Container Imersivo sem fundo retangular nem textos de sistema -->
+  <div class="immersive-overlay-root" id="overlayWidgetRoot">
+
+    <!-- 1. O Semicírculo Celeste (Sol / Lua em Órbita de 360 graus) -->
+    <div class="celestial-dome" id="overlayCelestialStage" data-period="night">
+      <div class="starfield"></div>
+      <div class="orbit-guide-arc"></div>
+
+      <!-- Roda Orbital Sincronizada com 24h -->
+      <div class="orbit-wheel" id="overlayOrbitWheel">
+        <div class="celestial-body sun-icon">☀️</div>
+        <div class="celestial-body moon-icon">🌙</div>
+      </div>
+
+      <!-- Sombra de Obstrução quando não há visão do céu -->
+      <div class="sky-blocked-overlay" id="overlaySkyBlocked">
+        <div class="sky-blocked-icon">🌑</div>
+      </div>
+
+      <!-- Linha de Horizonte Minimalista -->
+      <div class="dome-horizon-line"></div>
+    </div>
+
+    <!-- 2. Relógio Físico dos Personagens (Exibido apenas quando ativo pelo Mestre) -->
+    <div class="immersive-clock-mount" id="overlayClockMount">
+
+      <!-- Relógio Digital Imersivo -->
+      <div class="immersive-digital-watch" id="overlayDigitalBox">
+        <div class="player-digital-digits" id="overlayPlayerDigital">21:30:00</div>
+      </div>
+
+      <!-- Relógio Analógico Imersivo (Apenas o Mostrador com Ponteiros) -->
+      <div class="immersive-analog-watch hidden" id="overlayAnalogBox">
+        <div class="analog-watch-face" id="overlayAnalogFace">
+          <div class="watch-Center-pin"></div>
+          <div class="watch-hand hour-hand" id="overlayHourHand"></div>
+          <div class="watch-hand minute-hand" id="overlayMinuteHand"></div>
+          <div class="watch-hand second-hand" id="overlaySecondHand"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="shared-sync.js"></script>
+  <script src="overlay.js"></script>
+</body>
+</html>
